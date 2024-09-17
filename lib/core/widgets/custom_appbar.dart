@@ -11,7 +11,7 @@ AppBar buildAppBar(
     centerTitle: true,
     title: Text(
       title,
-      style: TextStyle(color: AppColors.inversePrimary),
+      style: const TextStyle(color: AppColors.inversePrimary),
     ),
   );
 }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:music_app/home/presentation/cubit/song_cubit/song_cubit.dart';
 import 'package:music_app/home/presentation/view/widgets/cutom_list_tile.dart';
 
 class HomeViewBody extends StatelessWidget {
@@ -6,11 +8,30 @@ class HomeViewBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: 20,
-      itemBuilder: (context, index) {
-        return const CutomListTile();
-      },
-    );
+    return BlocConsumer<SongCubit, SongState>(
+        listener: (context, state) => {},
+        builder: (context, state) {
+          if (state is SongLoading) {
+            return const Center(child: CircularProgressIndicator());
+          } else
+
+          // return ModalProgressHUD(
+          //           inAsyncCall: state is Signupuploading ? true : false,
+          //           child: const SignupViewBody());
+
+          if (state is SongSuccess) {
+            return ListView.builder(
+                itemCount: state.song.length,
+                itemBuilder: (context, index) {
+                  return CutomListTile(
+                    song: state.song[index],
+                  );
+                });
+          } else if (state is SongFailed) {
+            return Center(child: Text(state.message));
+          } else {
+            return const Center(child: CircularProgressIndicator());
+          }
+        });
   }
 }

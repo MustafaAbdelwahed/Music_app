@@ -1,27 +1,33 @@
 import 'package:dartz/dartz.dart';
-import 'package:music_app/home/domain/repos/music_repo.dart';
+import 'package:music_app/home/domain/repos/song_repo.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
-class MusicRepoImpl extends MusicRepo {
+class SongRepoImpl extends SongRepo {
   @override
-  Future<Either<String, List<SongModel>>> getMusic() async {
+  Future<Either<String, List<SongModel>>> fetchSong() async {
     await OnAudioQuery().permissionsRequest();
     bool isPermition = await OnAudioQuery().permissionsStatus();
     if (isPermition) {
       final OnAudioQuery audioQuery = OnAudioQuery();
-
+      List<SongModel> songs = [];
       try {
-        List<SongModel> songs = await audioQuery.querySongs(
+        songs = await audioQuery.querySongs(
             ignoreCase: true,
             uriType: UriType.EXTERNAL,
             orderType: OrderType.ASC_OR_SMALLER,
             sortType: null);
-        songs = songs
-            .where((song) => song.duration != null && song.duration! >= 20000)
-            .toList();
+
+        print(songs.length);
+        if (songs.isEmpty) {
+          return left("not Found Songs");
+        } else {
+          songs = songs
+              .where((song) => song.duration != null && song.duration! >= 20000)
+              .toList();
+        }
         return right(songs);
-      } on Exception catch (e) {
-        return left("not Found Songs");
+      } on Exception {
+        return left("not Found Sodsdsangs");
       }
     }
     return left("Permission Denied");

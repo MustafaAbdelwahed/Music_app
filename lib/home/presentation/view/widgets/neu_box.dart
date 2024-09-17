@@ -1,31 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:music_app/home/presentation/view/widgets/neu_box._decor.dart';
+import 'package:on_audio_query/on_audio_query.dart';
 
 class NueBox extends StatelessWidget {
   const NueBox({
     super.key,
+    required this.song,
   });
-
+  final SongModel song;
   @override
   Widget build(BuildContext context) {
     return NeuBoxDecor(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(
+          SizedBox(
             width: double.infinity,
             height: 300,
             /////////////////////////////////////////////
-            child: Icon(Icons.music_note),
-            //  QueryArtworkWidget(
-            //     keepOldArtwork: true,
-            //     size: 500,
-            //     artworkFit: BoxFit.fill,
-            //     quality: 100,
-            //     nullArtworkWidget: const Icon(Icons.music_note),
-            //     artworkBorder: BorderRadius.circular(0),
-            //     id: song.id,
-            //     type: ArtworkType.AUDIO),
+            child:
+                // child: Icon(Icons.music_note),
+                QueryArtworkWidget(
+                    keepOldArtwork: true,
+                    size: 500,
+                    artworkFit: BoxFit.fill,
+                    quality: 100,
+                    nullArtworkWidget: const Icon(Icons.music_note),
+                    artworkBorder: BorderRadius.circular(0),
+                    id: song.id,
+                    type: ArtworkType.AUDIO),
           ),
           const SizedBox(
             height: 10,
@@ -44,8 +47,8 @@ class NueBox extends StatelessWidget {
                         width: MediaQuery.of(context).size.width * 0.6,
                         //////////////////////////////////////////
                         child: Text(
-                          "song Name",
-                          // song.title,
+                          // "song Name",
+                          song.title,
                           maxLines: 1,
                           style: TextStyle(
                               overflow: TextOverflow.ellipsis,
@@ -60,8 +63,8 @@ class NueBox extends StatelessWidget {
                         /////////////////////////////////
                         child: Text(
                           maxLines: 1,
-                          "Artist Name",
-                          // song.artist ?? "",
+                          // "Artist Name",
+                          song.artist ?? "Unknown Artist",
                           style: TextStyle(
                               overflow: TextOverflow.ellipsis,
                               fontSize: 15,

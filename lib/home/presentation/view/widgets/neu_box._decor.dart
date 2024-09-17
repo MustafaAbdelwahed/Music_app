@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:music_app/core/utils/app_color.dart';
 
 class NeuBoxDecor extends StatelessWidget {
   const NeuBoxDecor({super.key, required this.child});
