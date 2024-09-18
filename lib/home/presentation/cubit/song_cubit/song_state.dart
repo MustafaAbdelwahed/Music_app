@@ -14,7 +14,19 @@ final class SongFailed extends SongState {
 }
 
 final class SongSuccess extends SongState {
-  final List<SongModel> song;
+  final List<SongModel>? songs;
+  final SongModel? currentsong;
+  final int? currentSongIndex;
 
-  SongSuccess(this.song);
+  SongSuccess({
+    this.currentsong,
+    required this.songs,
+    this.currentSongIndex,
+  });
 }
+
+// final class CurrintSong extends SongState {
+//   final SongModel song;
+
+//   CurrintSong(this.song);
+// }

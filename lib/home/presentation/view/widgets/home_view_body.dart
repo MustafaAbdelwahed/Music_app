@@ -21,10 +21,11 @@ class HomeViewBody extends StatelessWidget {
 
           if (state is SongSuccess) {
             return ListView.builder(
-                itemCount: state.song.length,
+                itemCount: state.songs!.length,
                 itemBuilder: (context, index) {
                   return CutomListTile(
-                    song: state.song[index],
+                    index: index,
+                    song: state.songs![index],
                   );
                 });
           } else if (state is SongFailed) {

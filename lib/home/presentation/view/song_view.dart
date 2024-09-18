@@ -6,11 +6,12 @@ import 'package:music_app/home/presentation/cubit/song_cubit/song_cubit.dart';
 import 'package:music_app/home/presentation/view/widgets/neu_box._decor.dart';
 import 'package:music_app/home/presentation/view/widgets/neu_box.dart';
 import 'package:music_app/home/presentation/view/widgets/slider_song.dart';
-import 'package:on_audio_query/on_audio_query.dart';
 
 class SongView extends StatelessWidget {
-  const SongView({super.key, required this.song});
-  final SongModel song;
+  const SongView({
+    super.key,
+  });
+  // final SongModel song;
   static const routeName = "song";
   String _formatDuration(Duration duration) {
     final minutes = duration.inMinutes;
@@ -34,17 +35,15 @@ class SongView extends StatelessWidget {
             body: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 40),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  NueBox(
-                    song: song,
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-
-                  Column(
-                    children: [
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    NueBox(
+                      song: state.currentsong!,
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    Column(children: [
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: Row(
@@ -89,14 +88,15 @@ class SongView extends StatelessWidget {
                         height: 10,
                       ),
                       Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Row(
-                            children: [
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Row(children: [
                               Expanded(
                                 child: GestureDetector(
                                   onTap: () {
-                                    // playlistProv.playPreviosSong();
+                                    context
+                                        .read<SongCubit>()
+                                        .previosSong(state.currentsong!);
 
                                     // curintSong(playlistProv.curintSongIndex);
 
@@ -114,19 +114,10 @@ class SongView extends StatelessWidget {
                               Expanded(
                                 flex: 2,
                                 child: GestureDetector(
-                                  onTap: () {
-                                    // playlistProv.play();
-
-                                    // playlistProv.pauseOrResume();
-                                    // playlistProv.pauseOrResume();
-                                    // playeing = !playeing;
-                                  },
+                                  onTap: () {},
                                   child: const NeuBoxDecor(
                                       child: Icon(
                                     Icons.play_arrow,
-                                    // playlistProv.isPlaying
-                                    //     ? Icons.pause
-                                    //     : Icons.play_arrow,
                                   )),
                                 ),
                               ),
@@ -136,48 +127,27 @@ class SongView extends StatelessWidget {
                               Expanded(
                                 child: GestureDetector(
                                   onTap: () {
-                                    // playlistProv.playNextSong();
-
-                                    // curintSong(playlistProv.curintSongIndex);
-
-                                    // playeing = true;
+                                    context
+                                        .read<SongCubit>()
+                                        .skipSong(state.currentsong!);
                                   },
                                   child: const NeuBoxDecor(
                                       child: Icon(
                                     Icons.skip_next,
                                   )),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      )
-                    ],
-                  )
-
-                  // SliderTheme(
-                  //   data: const SliderThemeData().copyWith(
-                  //       thumbShape:
-                  //           const RoundSliderThumbShape(enabledThumbRadius: 0)),
-                  //   child: Slider(
-                  //     value: 50,
-                  //     min: 0,
-                  //     max: 100,
-                  //     activeColor: Colors.blue.shade900,
-                  //     onChanged: (value) {},
-                  //     onChangeEnd: (double) {
-                  //       playlistProv.seek(Duration(seconds: double.toInt()));
-                  //     },
-                  //   ),
-                  // ),
-                ],
-              ),
+                              )
+                            ]),
+                          ])
+                    ])
+                  ]),
             ),
           );
         } else {
-          return Scaffold(body: const Text("Not Found Song"));
+          return Scaffold(body: Center(child: const Text("Not Found Song")));
         }
       },
     );
   }
 }
+  
