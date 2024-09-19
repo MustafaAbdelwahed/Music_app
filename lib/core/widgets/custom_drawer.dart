@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:music_app/core/utils/app_color.dart';
-import 'package:music_app/home/presentation/view/setting_view.dart';
+import 'package:music_app/features/home/presentation/view/setting_view.dart';
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({super.key});

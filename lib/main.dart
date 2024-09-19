@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:music_app/core/utils/app_color.dart';
 import 'package:music_app/core/utils/get_it.dart';
 import 'package:music_app/core/utils/on_generate_route.dart';
-import 'package:music_app/home/presentation/cubit/song_cubit/song_cubit.dart';
-import 'package:music_app/home/presentation/view/home_view.dart';
-import 'package:music_app/test.dart';
+import 'package:music_app/features/home/presentation/cubit/song_cubit/song_cubit.dart';
+import 'package:music_app/features/home/presentation/view/home_view.dart';
+import 'package:music_app/features/splash/presentaion/view/splash_view.dart';
 
 void main() {
   initGetIt();
@@ -21,19 +21,20 @@ class MyApp extends StatelessWidget {
     return BlocProvider(
       create: (context) => SongCubit(getIt())..getSong(),
       child: MaterialApp(
-          onGenerateRoute: onGenerateRoute,
-          initialRoute: TestView.routeName,
-          debugShowCheckedModeBanner: false,
-          title: 'Flutter Demo',
-          theme: ThemeData(
-            colorScheme: const ColorScheme.light(
-              primary: AppColors.primaryColor,
-              secondary: AppColors.secondaryColor,
-              inversePrimary: AppColors.inversePrimary,
-            ),
-            useMaterial3: true,
+        onGenerateRoute: onGenerateRoute,
+        initialRoute: SplashView.routeName,
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          scaffoldBackgroundColor: AppColors.scaffoldBackgroundColor,
+          colorScheme: const ColorScheme.light(
+            primary: AppColors.primaryColor,
+            secondary: AppColors.secondaryColor,
+            inversePrimary: AppColors.inversePrimary,
           ),
-          home: const HomeView()),
+          useMaterial3: true,
+        ),
+      ),
     );
   }
 }

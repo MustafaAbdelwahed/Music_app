@@ -7,7 +7,7 @@ class AppColors {
   static const Color primaryColor = Color(0xFF757575);
   static const Color secondaryColor = Color(0xFFEEEEEE);
   static const Color inversePrimary = Color(0xFF000000);
-  static const Color scaffoldBackgroundColor = Color(0xFFE0E0E0);
+  static const Color scaffoldBackgroundColor = Color(0xffe0e0e0);
 
   // ThemeData lightMode = ThemeData(
 
