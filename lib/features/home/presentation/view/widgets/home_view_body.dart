@@ -8,25 +8,24 @@ class HomeViewBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<SongCubit, SongState>(
-        listener: (context, state) => {},
-        builder: (context, state) {
-          if (state is SongLoading) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (state is SongSuccess) {
-            return ListView.builder(
-                itemCount: state.songs!.length,
-                itemBuilder: (context, index) {
-                  return CutomListTile(
-                    index: index,
-                    song: state.songs![index],
-                  );
-                });
-          } else if (state is SongFailed) {
-            return Center(child: Text(state.message));
-          } else {
-            return const Center(child: CircularProgressIndicator());
-          }
-        });
+    return BlocBuilder<SongCubit, SongState>(builder: (context, state) {
+      var songCubit = context.read<SongCubit>();
+      if (state is SongLoading) {
+        return const Center(child: CircularProgressIndicator());
+      } else if (state is SongSuccess) {
+        return ListView.builder(
+            itemCount: songCubit.songs.length,
+            itemBuilder: (context, index) {
+              return CutomListTile(
+                index: index,
+                song: songCubit.songs[index],
+              );
+            });
+      } else if (state is SongFailed) {
+        return Center(child: Text(state.message));
+      } else {
+        return const Center(child: CircularProgressIndicator());
+      }
+    });
   }
 }

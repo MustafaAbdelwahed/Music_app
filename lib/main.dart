@@ -4,7 +4,6 @@ import 'package:music_app/core/utils/app_color.dart';
 import 'package:music_app/core/utils/get_it.dart';
 import 'package:music_app/core/utils/on_generate_route.dart';
 import 'package:music_app/features/home/presentation/cubit/song_cubit/song_cubit.dart';
-import 'package:music_app/features/home/presentation/view/home_view.dart';
 import 'package:music_app/features/splash/presentaion/view/splash_view.dart';
 
 void main() {
@@ -24,7 +23,7 @@ class MyApp extends StatelessWidget {
         onGenerateRoute: onGenerateRoute,
         initialRoute: SplashView.routeName,
         debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
+        title: 'Music app',
         theme: ThemeData(
           scaffoldBackgroundColor: AppColors.scaffoldBackgroundColor,
           colorScheme: const ColorScheme.light(

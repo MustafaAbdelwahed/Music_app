@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:music_app/core/utils/app_color.dart';
+import 'package:music_app/core/utils/format_duration.dart';
 import 'package:music_app/core/widgets/custom_appbar.dart';
 import 'package:music_app/features/home/presentation/cubit/song_cubit/song_cubit.dart';
 import 'package:music_app/features/home/presentation/view/widgets/neu_box._decor.dart';
@@ -13,19 +14,13 @@ class SongView extends StatelessWidget {
   });
   // final SongModel song;
   static const routeName = "song";
-  String _formatDuration(Duration duration) {
-    final minutes = duration.inMinutes;
-    final seconds = duration.inSeconds % 60;
-    return '$minutes:${seconds.toString().padLeft(2, '0')}';
-  }
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SongCubit, SongState>(
       builder: (context, state) {
-        if (state is SongLoading || state is SongInitial) {
-          return const Scaffold(body: CircularProgressIndicator());
-        } else if (state is SongSuccess) {
+        if (state is SongSuccess) {
+          var songCubit = context.read<SongCubit>();
           return Scaffold(
             backgroundColor: AppColors.scaffoldBackgroundColor,
             appBar: buildAppBar(
@@ -38,20 +33,19 @@ class SongView extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     NueBox(
-                      song: state.currentsong!,
+                      song: songCubit.currentSong!,
                     ),
                     const SizedBox(
                       height: 30,
                     ),
-                    Column(children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Row(
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
                               //  curinitDuration.toString(),
-                              _formatDuration(Duration.zero),
+                              formatDuration(songCubit.curinitDuration),
                               style: TextStyle(
                                 fontSize: 16,
                                 color: Theme.of(context)
@@ -72,79 +66,70 @@ class SongView extends StatelessWidget {
                                   Theme.of(context).colorScheme.inversePrimary,
                             ),
                             Text(
-                              _formatDuration(Duration.zero),
+                              formatDuration(songCubit.totalDuration),
                               style: TextStyle(
                                 fontSize: 16,
                                 color: Theme.of(context)
                                     .colorScheme
                                     .inversePrimary,
                               ),
-                            ),
-                          ],
+                            )
+                          ]),
+                    ),
+                    const SliderSong(),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Row(children: [
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {
+                            songCubit.playPreviosSong(songCubit.currentSong!);
+                          },
+                          child: const NeuBoxDecor(
+                              child: Icon(
+                            Icons.skip_previous,
+                          )),
                         ),
                       ),
-                      const SliderSong(),
                       const SizedBox(
-                        height: 10,
+                        width: 10,
                       ),
-                      Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Row(children: [
-                              Expanded(
-                                child: GestureDetector(
-                                  onTap: () {
-                                    context
-                                        .read<SongCubit>()
-                                        .previosSong(state.currentsong!);
-
-                                    // curintSong(playlistProv.curintSongIndex);
-
-                                    // playeing = true;
-                                  },
-                                  child: const NeuBoxDecor(
-                                      child: Icon(
-                                    Icons.skip_previous,
-                                  )),
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              Expanded(
-                                flex: 2,
-                                child: GestureDetector(
-                                  onTap: () {},
-                                  child: const NeuBoxDecor(
-                                      child: Icon(
-                                    Icons.play_arrow,
-                                  )),
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              Expanded(
-                                child: GestureDetector(
-                                  onTap: () {
-                                    context
-                                        .read<SongCubit>()
-                                        .skipSong(state.currentsong!);
-                                  },
-                                  child: const NeuBoxDecor(
-                                      child: Icon(
-                                    Icons.skip_next,
-                                  )),
-                                ),
-                              )
-                            ]),
-                          ])
+                      Expanded(
+                        flex: 2,
+                        child: GestureDetector(
+                          onTap: () {
+                            songCubit.pauseOrResume();
+                          },
+                          child: NeuBoxDecor(
+                              child: Icon(songCubit.isPlaying
+                                  ? Icons.pause
+                                  : Icons.play_arrow)),
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {
+                            songCubit.playNextSong();
+                          },
+                          child: const NeuBoxDecor(
+                              child: Icon(
+                            Icons.skip_next,
+                          )),
+                        ),
+                      )
                     ])
                   ]),
             ),
           );
+        } else if (state is SongFailed) {
+          return Scaffold(body: Center(child: Text(state.message)));
         } else {
-          return const Scaffold(body: Center(child: Text("Not Found Song")));
+          return const Scaffold(
+              body: Center(child: CircularProgressIndicator()));
         }
       },
     );

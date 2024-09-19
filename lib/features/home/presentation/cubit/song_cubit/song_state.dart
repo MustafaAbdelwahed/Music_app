@@ -14,15 +14,15 @@ final class SongFailed extends SongState {
 }
 
 final class SongSuccess extends SongState {
-  final List<SongModel>? songs;
-  final SongModel? currentsong;
-  final int? currentSongIndex;
+  // final List<SongModel>? songs;
+  // final SongModel? currentsong;
+  // final int? currentSongIndex;
 
-  SongSuccess({
-    this.currentsong,
-    required this.songs,
-    this.currentSongIndex,
-  });
+  // SongSuccess({
+  //   // this.currentsong,
+  //   // this.songs,
+  //   // this.currentSongIndex,
+  // });
 }
 
 // final class CurrintSong extends SongState {

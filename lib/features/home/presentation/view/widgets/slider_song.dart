@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:music_app/features/home/presentation/cubit/song_cubit/song_cubit.dart';
 
 class SliderSong extends StatelessWidget {
   const SliderSong({
@@ -7,23 +9,33 @@ class SliderSong extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliderTheme(
-        data: const SliderThemeData().copyWith(
-            thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 0)),
-        child: Slider(
-          activeColor: Colors.blue,
-          min: 0,
-          max: 5,
-          // max: playlistProv.totalDuration.inSeconds.toDouble(),
-          // max: totalDuration,
-          value: 5,
-          // value: curinitDuration > totalDuration
-          //     ? totalDuration
-          //     : curinitDuration,
+    return BlocBuilder<SongCubit, SongState>(
+      builder: (context, state) {
+        var songCubit = context.read<SongCubit>();
+        return SliderTheme(
+            data: const SliderThemeData().copyWith(
+                trackShape: const RectangularSliderTrackShape(),
+                thumbShape: const RoundSliderThumbShape(
+                  // elevation: 0,
+                  enabledThumbRadius: 6.5,
+                )),
+            child: Slider(
+              // onChanged: (value) {},
+              activeColor: Colors.blue,
+              min: 0,
+              // max: 5,
+              max: songCubit.totalDuration.inSeconds.toDouble(),
+              // value: 5,
+              value: songCubit.curinitDuration > songCubit.totalDuration
+                  ? songCubit.totalDuration.inSeconds.toDouble()
+                  : songCubit.curinitDuration.inSeconds.toDouble(),
+// onChangeEnd: ,
 
-          onChanged: (value) {
-            // playlistProv.seek(Duration(seconds: value.toInt()));
-          },
-        ));
+              onChanged: (value) {
+                songCubit.seek(Duration(seconds: value.toInt()));
+              },
+            ));
+      },
+    );
   }
 }

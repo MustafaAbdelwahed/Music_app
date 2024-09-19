@@ -25,8 +25,8 @@ class CutomListTile extends StatelessWidget {
           onTap: () {
             context.read<SongCubit>().currentIndex(index, song);
             Navigator.pushNamed(context, SongView.routeName);
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const SongView()));
+            // Navigator.push(context,
+            //     MaterialPageRoute(builder: (context) => const SongView()));
           },
           leading: QueryArtworkWidget(
             keepOldArtwork: true,

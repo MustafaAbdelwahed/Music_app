@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:music_app/features/home/presentation/view/home_view.dart';
 import 'package:music_app/features/home/presentation/view/setting_view.dart';
+import 'package:music_app/features/home/presentation/view/song_view.dart';
 import 'package:music_app/features/splash/presentaion/view/splash_view.dart';
 
 Route<dynamic> onGenerateRoute(RouteSettings settings) {
@@ -9,8 +10,8 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
     //   return MaterialPageRoute(builder: (context) => const TestView());
     case HomeView.routeName:
       return MaterialPageRoute(builder: (context) => const HomeView());
-    // case SongView.routeName:
-    //   return MaterialPageRoute(builder: (context) => const SongView());
+    case SongView.routeName:
+      return MaterialPageRoute(builder: (context) => const SongView());
     case SettingView.routeName:
       return MaterialPageRoute(builder: (context) => const SettingView());
     case SplashView.routeName:
