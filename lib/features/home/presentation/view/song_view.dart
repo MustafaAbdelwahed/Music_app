@@ -30,6 +30,7 @@ class SongView extends StatelessWidget {
             body: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 40),
               child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     NueBox(
@@ -37,6 +38,65 @@ class SongView extends StatelessWidget {
                     ),
                     const SizedBox(
                       height: 30,
+                    ), // Text("pitch ${songCubit.pitch - 0.5}"),
+                    Text("Speed : ${songCubit.speed} x",
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(fontSize: 15)),
+
+                    Expanded(
+                      child: SliderTheme(
+                        data: const SliderThemeData().copyWith(
+                            trackShape: const RectangularSliderTrackShape(),
+                            thumbShape: const RoundSliderThumbShape(
+                              // elevation: 0,
+                              enabledThumbRadius: 6.5,
+                            )),
+                        child: Slider(
+                          value: songCubit.speed,
+                          min: 0.5,
+                          max: 1.5,
+
+                          divisions: 10,
+                          // divisions: 10,
+                          onChanged: (value) {
+                            // print(value);
+                            songCubit.setSpeed(value);
+                          },
+                        ),
+                      ),
+                    ),
+
+                    // Text(
+                    //   "Pitch : ${songCubit.pitch} ",
+                    //   textAlign: TextAlign.center,
+                    //   style: TextStyle(fontSize: 15),
+                    // ),
+                    Text(
+                      // "Pitch : ${songCubit.pitch / 10} ",
+                      "Pitch : ${songCubit.pitch.toInt() - 10} ",
+                      // "Pitch : ${songCubit.pitch <= 1 ? -(songCubit.pitch * 10) : (songCubit.pitch)} ",
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(fontSize: 15),
+                    ),
+
+                    Expanded(
+                      child: SliderTheme(
+                        data: const SliderThemeData().copyWith(
+                            trackShape: const RectangularSliderTrackShape(),
+                            thumbShape: const RoundSliderThumbShape(
+                              // elevation: 0,
+                              enabledThumbRadius: 6.5,
+                            )),
+                        child: Slider(
+                          value: songCubit.pitch,
+                          min: 5,
+                          max: 15,
+                          divisions: 10,
+                          onChanged: (value) {
+                            songCubit.setPitch(value);
+                          },
+                        ),
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -53,17 +113,31 @@ class SongView extends StatelessWidget {
                                     .inversePrimary,
                               ),
                             ),
-                            Icon(
-                              Icons.shuffle,
-                              size: 25,
-                              color:
-                                  Theme.of(context).colorScheme.inversePrimary,
+                            IconButton(
+                              onPressed: () {
+                                // songCubit.toggleShuffle();
+                              },
+                              icon: Icon(
+                                Icons.shuffle,
+                                size: 27,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .inversePrimary,
+                              ),
                             ),
-                            Icon(
-                              Icons.repeat,
-                              size: 25,
-                              color:
-                                  Theme.of(context).colorScheme.inversePrimary,
+                            IconButton(
+                              onPressed: () {
+                                songCubit.toggleLooping();
+                              },
+                              icon: Icon(
+                                songCubit.isLooping
+                                    ? Icons.repeat_one
+                                    : Icons.repeat,
+                                size: 27,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .inversePrimary,
+                              ),
                             ),
                             Text(
                               formatDuration(songCubit.totalDuration),

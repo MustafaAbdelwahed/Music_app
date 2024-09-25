@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_audio/just_audio.dart';
@@ -10,19 +12,26 @@ part 'song_state.dart';
 class SongCubit extends Cubit<SongState> {
   SongCubit(this.songRepo) : super(SongInitial()) {
     currintAndTotalduration();
-    // _listenForCompletion();
   }
 
   final SongRepo songRepo;
 
   List<SongModel> songs = [];
+  List<SongModel> shuffleSongs = [];
   int? currentSongIndex;
   SongModel? currentSong;
 
+  Random random = Random();
+
   bool isPlaying = false;
-  AudioPlayer audioPlayer = AudioPlayer();
+  bool isShuffling = false;
+  bool isLooping = false;
+  final AudioPlayer _audioPlayer = AudioPlayer();
   Duration curinitDuration = Duration.zero;
   Duration totalDuration = Duration.zero;
+
+  double speed = 1.0;
+  double pitch = 1.0;
 
   Future<void> getSong() async {
     emit(SongLoading());
@@ -40,74 +49,38 @@ class SongCubit extends Cubit<SongState> {
   void play(int curintSongindex) async {
     currentSongIndex = curintSongindex;
     currentSong = songs[currentSongIndex!];
-
-    audioPlayer.setAudioSource(AudioSource.uri(
+    // _audioPlayer.setSpeed(0.9);
+    // _audioPlayer.setPitch(-1.0);
+    _audioPlayer.setAudioSource(AudioSource.uri(
       Uri.parse(songs[curintSongindex].uri!),
     ));
-    audioPlayer.play();
-    isPlaying = true;
 
-    // audioPlayer.playerStateStream.listen((playerState) {
-    //   if (playerState.processingState == ProcessingState.completed) {
-    //     playNextSong();
-    //   }
-    // });
+    _audioPlayer.play();
+    // setSpeed(0.9);
+    // setPitch(0.9);
+    isPlaying = true;
   }
 
-  // void _listenForCompletion() {
-  //   audioPlayer.playerStateStream.listen((playerState) {
-  //     if (playerState.processingState == ProcessingState.completed) {
-  //       // Check if there is a next song in the playlist
-  //       if (currentSongIndex! < songs.length - 1) {
-  //         currentSongIndex = currentSongIndex! + 1;
-  //         play(currentSongIndex!);
-  //       } else {
-  //         // Optionally, restart from the first song or stop playing
-  //         audioPlayer.stop();
-  //       }
-  //     }
-  //   });
-  // }
-
   void playNextSong() {
-    // print("//////////////////////////////////////////////");
-
-    // print(currentSongIndex);
-    // print("//////////////////////////////////////////////");
-
-    // if (currentSongIndex! < songs.length - 1) {
-    //   currentSongIndex = currentSongIndex! + 1;
-    // } else {
-    //   currentSongIndex = 0;
-    // }
-    // print(currentSongIndex);
-
-    // currentSong = songs[currentSongIndex!];
-    // play(currentSongIndex!);
-
-    // emit(SongSuccess());
     if (currentSongIndex! < songs.length - 1) {
       currentSongIndex = currentSongIndex! + 1;
       play(currentSongIndex!);
     } else {
-      // Optionally, restart from the first song or stop playing
       currentSongIndex = 0;
       play(currentSongIndex!);
-
-      // audioPlayer.stop();
     }
-  }
-
-  void seek(Duration position) async {
-    await audioPlayer.seek(position);
   }
 
   void pauseOrResume() {
     if (isPlaying) {
-      audioPlayer.pause();
+      _audioPlayer.pause();
       isPlaying = false;
     } else {
-      audioPlayer.play();
+      _audioPlayer.setSpeed(0.9);
+
+      _audioPlayer.setPitch(0.9);
+
+      _audioPlayer.play();
       isPlaying = true;
 
       // play(curintSongIndex!);
@@ -117,15 +90,20 @@ class SongCubit extends Cubit<SongState> {
         ));
   }
 
+  void seek(Duration position) async {
+    await _audioPlayer.seek(position);
+    // emit(SongSuccess(
+    //     // songs: songs,
+    //     ));
+  }
+
   void currentIndex(int index, SongModel song) {
     if (index != currentSongIndex) {
       currentSong = song;
       currentSongIndex = index;
       play(index);
     }
-    emit(SongSuccess(
-        // songs: songs,
-        ));
+    emit(SongSuccess());
   }
 
   void playPreviosSong(SongModel song) {
@@ -137,31 +115,67 @@ class SongCubit extends Cubit<SongState> {
 
     currentSong = songs[currentSongIndex!];
     play(currentSongIndex!);
-    emit(SongSuccess(
-        // songs: songs,
-        // currentsong: currentSong,
-        // currentSongIndex: currentSongIndex
-        ));
+    emit(SongSuccess());
   }
 
   void currintAndTotalduration() {
-    audioPlayer.durationStream.listen((totalduration) {
+    _audioPlayer.durationStream.listen((totalduration) {
       totalDuration = totalduration!;
       emit(SongSuccess(
           // songs: songs,
           ));
     });
-    audioPlayer.positionStream.listen((curinitduration) {
+    _audioPlayer.positionStream.listen((curinitduration) {
       curinitDuration = curinitduration;
-      emit(SongSuccess(
-          // songs: songs,
-          ));
+      emit(SongSuccess());
     });
-    audioPlayer.playerStateStream.listen((playerState) {
+    _audioPlayer.playerStateStream.listen((playerState) {
       if (playerState.processingState == ProcessingState.completed) {
         playNextSong();
-        // Check if there is a next song in the playlist
       }
     });
   }
+
+  void toggleLooping() {
+    if (isLooping) {
+      // _audioPlayer.setShuffleModeEnabled();
+      _audioPlayer.setLoopMode(LoopMode.off);
+    } else {
+      _audioPlayer.setLoopMode(LoopMode.one);
+    }
+
+    isLooping = !isLooping;
+    emit(SongSuccess());
+  }
+
+  void setSpeed(double speed) {
+    this.speed = speed;
+    _audioPlayer.setSpeed(speed);
+    emit(SongSuccess());
+  }
+
+  void setPitch(double pitch) {
+    this.pitch = pitch;
+    _audioPlayer.setPitch(pitch / 10);
+    // _audioPlayer.setPitch(pitch);
+    emit(SongSuccess());
+  }
+
+  // void toggleShuffle() {
+  //   isShuffling = !isShuffling;
+
+  //   // _audioPlayer.setShuffleModeEnabled();
+  //   _audioPlayer.setShuffleModeEnabled(true);
+  //   print("////////////////////////////////////////////////////////");
+  //   print(isShuffling);
+  //   print("////////////////////////////////////////////////////////");
+
+  //   // songs.shuffle(random);
+  //   // _audioPlayer.shuffle();
+  //   // currentSongIndex = Random().nextInt(songs.length - 1);
+  //   // print("////////////////////////////////////////////////////////");
+  //   // print(currentSongIndex);
+  //   // print("////////////////////////////////////////////////////////");
+  //   // play(currentSongIndex!);
+  // }
 }

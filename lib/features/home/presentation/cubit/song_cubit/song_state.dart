@@ -24,9 +24,3 @@ final class SongSuccess extends SongState {
   //   // this.currentSongIndex,
   // });
 }
-
-// final class CurrintSong extends SongState {
-//   final SongModel song;
-
-//   CurrintSong(this.song);
-// }

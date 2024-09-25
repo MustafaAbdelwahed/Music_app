@@ -20,7 +20,6 @@ class SliderSong extends StatelessWidget {
                   enabledThumbRadius: 6.5,
                 )),
             child: Slider(
-              // onChanged: (value) {},
               activeColor: Colors.blue,
               min: 0,
               // max: 5,
