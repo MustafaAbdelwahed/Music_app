@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:music_app/features/splash/presentaion/view/widget/splash_view_body.dart';
-// import 'package:fruit_ecommerce_app/features/splash/presentaion/view/widget/splash_view_body.dart';
 
 class SplashView extends StatelessWidget {
   const SplashView({super.key});
@@ -9,7 +8,6 @@ class SplashView extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: SplashViewBody(),
-      // backgroundColor: AppColors.scaffoldBackgroundColor,
     );
   }
 }

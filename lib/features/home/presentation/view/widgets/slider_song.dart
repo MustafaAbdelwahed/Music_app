@@ -28,7 +28,6 @@ class SliderSong extends StatelessWidget {
               value: songCubit.curinitDuration > songCubit.totalDuration
                   ? songCubit.totalDuration.inSeconds.toDouble()
                   : songCubit.curinitDuration.inSeconds.toDouble(),
-// onChangeEnd: ,
 
               onChanged: (value) {
                 songCubit.seek(Duration(seconds: value.toInt()));

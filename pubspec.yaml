@@ -33,13 +33,13 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.6
-  flutter_riverpod: ^2.5.1
+  # flutter_riverpod: ^2.5.1
   get_it: ^7.7.0
   just_audio: ^0.9.40
   just_audio_background: ^0.0.1-beta.13
   modal_progress_hud_nsn: ^0.5.1
   on_audio_query: ^2.9.0
-  permission_handler: ^11.3.1
+  # permission_handler: ^11.3.1
 
 dev_dependencies:
   flutter_lints: ^3.0.0

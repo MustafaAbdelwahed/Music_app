@@ -75,13 +75,13 @@ class NueBox extends StatelessWidget {
                     ],
                   ),
                 ),
-                IconButton(
-                    onPressed: () {},
-                    icon: const Icon(
-                      Icons.favorite,
-                      color: Colors.red,
-                      size: 30,
-                    ))
+                // IconButton(
+                //     onPressed: () {},
+                //     icon: const Icon(
+                //       Icons.favorite,
+                //       color: Colors.red,
+                //       size: 30,
+                //     ))
               ],
             ),
           )

@@ -12,7 +12,7 @@ class HomeView extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.scaffoldBackgroundColor,
       appBar: buildAppBar(
-          backgroundColor: AppColors.primaryColor, title: "P L A Y L I S T"),
+          backgroundColor: AppColors.primaryColor, title: "H O M E"),
       drawer: const CustomDrawer(),
       body: const HomeViewBody(),
     );

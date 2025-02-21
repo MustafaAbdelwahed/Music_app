@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_audio/just_audio.dart';
@@ -30,8 +29,8 @@ class SongCubit extends Cubit<SongState> {
   Duration curinitDuration = Duration.zero;
   Duration totalDuration = Duration.zero;
 
-  double speed = 1.0;
-  double pitch = 1.0;
+  // double speed = 1.0;
+  // double pitch = 1.0;
 
   Future<void> getSong() async {
     emit(SongLoading());
@@ -76,10 +75,6 @@ class SongCubit extends Cubit<SongState> {
       _audioPlayer.pause();
       isPlaying = false;
     } else {
-      _audioPlayer.setSpeed(0.9);
-
-      _audioPlayer.setPitch(0.9);
-
       _audioPlayer.play();
       isPlaying = true;
 
@@ -148,34 +143,16 @@ class SongCubit extends Cubit<SongState> {
     emit(SongSuccess());
   }
 
-  void setSpeed(double speed) {
-    this.speed = speed;
-    _audioPlayer.setSpeed(speed);
-    emit(SongSuccess());
-  }
+  // void setSpeed(double speed) {
+  //   this.speed = speed;
+  //   _audioPlayer.setSpeed(speed);
+  //   emit(SongSuccess());
+  // }
 
-  void setPitch(double pitch) {
-    this.pitch = pitch;
-    _audioPlayer.setPitch(pitch / 10);
-    // _audioPlayer.setPitch(pitch);
-    emit(SongSuccess());
-  }
-
-  // void toggleShuffle() {
-  //   isShuffling = !isShuffling;
-
-  //   // _audioPlayer.setShuffleModeEnabled();
-  //   _audioPlayer.setShuffleModeEnabled(true);
-  //   print("////////////////////////////////////////////////////////");
-  //   print(isShuffling);
-  //   print("////////////////////////////////////////////////////////");
-
-  //   // songs.shuffle(random);
-  //   // _audioPlayer.shuffle();
-  //   // currentSongIndex = Random().nextInt(songs.length - 1);
-  //   // print("////////////////////////////////////////////////////////");
-  //   // print(currentSongIndex);
-  //   // print("////////////////////////////////////////////////////////");
-  //   // play(currentSongIndex!);
+  // void setPitch(double pitch) {
+  //   this.pitch = pitch;
+  //   _audioPlayer.setPitch(pitch / 10);
+  //   // _audioPlayer.setPitch(pitch);
+  //   emit(SongSuccess());
   // }
 }
